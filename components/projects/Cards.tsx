@@ -92,7 +92,7 @@ export function ProjectsCardsSection({
       if (descriptionRef.current) {
         ScrollTrigger.create({
           trigger: descriptionRef.current,
-          start: "top 1%",
+          start: "top -10%",
           end: () => `+=${window.innerHeight * 1.2}`,
           pin: sectionRef.current,
           pinSpacing: true,

@@ -35,10 +35,10 @@ export default function InvestmentSection({
     const headingRevealRef = useRef<HTMLDivElement>(null);
     const videoContainerRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
-    const [isMobile, setIsMobile] = useState(false);
     const ctaRef = useRef<HTMLDivElement>(null);
+
+    const [isMobile, setIsMobile] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
-    // const [isPlaying, setIsPlaying] = useState(true);
     const [isMuted, setIsMuted] = useState(true);
     const [showControls, setShowControls] = useState(true);
     const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -58,19 +58,12 @@ export default function InvestmentSection({
             setShowControls(true);
             if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
         } else {
-            // Start timeout when play starts
             handleMouseMove();
         }
         return () => {
             if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
         };
     }, [isPlaying]);
-
-    useEffect(() => {
-        return () => {
-            if (videoRef.current) videoRef.current.pause();
-        };
-    }, []);
 
     useEffect(() => {
         const mql = window.matchMedia("(max-width: 1024px)");
@@ -87,25 +80,25 @@ export default function InvestmentSection({
     useLayoutEffect(() => {
         if (!sectionRef.current) return;
 
+        // Limpieza de contextos previos para evitar conflictos al cambiar idioma
         const ctx = gsap.context(() => {
-            // gsap.set(ctaRef.current, { opacity: 0 });
+            // ESTADOS INICIALES (Tus originales)
             gsap.set([ctaRef.current, mainContentRef.current, scrollOverlayRef.current], {
                 opacity: 0,
                 visibility: "visible"
             });
             gsap.set(extraRef.current, { opacity: 0, scale: 1.1, filter: "blur(20px)" });
-            gsap.set(mainContentRef.current, { opacity: 0 });
             gsap.set(videoContainerRef.current, {
                 height: 0,
                 overflow: "hidden",
             });
-            gsap.set(scrollOverlayRef.current, { opacity: 0 });
+
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
                     end: () => `+=${window.innerHeight * 5}`,
-                    scrub: true,
+                    scrub: true, // Tu scrub original
                     pin: true,
                     pinSpacing: true,
                     anticipatePin: 1,
@@ -121,7 +114,7 @@ export default function InvestmentSection({
                 },
             });
 
-            // INTRO fade in/out
+            // TU ANIMACIÓN ORIGINAL SIN CAMBIOS
             tl.to(extraRef.current, {
                 opacity: 1,
                 scale: 1,
@@ -129,16 +122,7 @@ export default function InvestmentSection({
                 duration: 1,
                 ease: "none"
             });
-
-            // tl.to({}, { duration: 1 });
-            // tl.to(extraRef.current, {
-            //     opacity: 0,
-            //     duration: 2,
-            //     ease: "power2.inOut"
-            // });
-
             tl.to({}, { duration: 1 });
-            // Exit / Dark Overlay
             tl.to(
                 scrollOverlayRef.current,
                 {
@@ -148,10 +132,8 @@ export default function InvestmentSection({
                 },
                 "<+=0.5"
             );
-            // MAIN CONTENT aparece
             tl.to(mainContentRef.current, { opacity: 1, duration: 1 });
 
-            // HEADING sube y se oculta
             tl.to(headingRevealRef.current, {
                 y: -50,
                 opacity: 0,
@@ -167,12 +149,6 @@ export default function InvestmentSection({
                     height: "auto",
                     duration: 1.5,
                     ease: "power2.inOut",
-                    // onComplete: () => {
-                    //     if (videoRef.current) {
-                    //         videoRef.current.play();
-                    //         setIsPlaying(false);
-                    //     }
-                    // },
                     onReverseComplete: () => {
                         if (videoRef.current) {
                             videoRef.current.pause();
@@ -194,14 +170,15 @@ export default function InvestmentSection({
         }, sectionRef);
 
         return () => ctx.revert();
-    }, []);
+        // AÑADIMOS DEPENDENCIAS: Se reinicia cuando cambian los textos del idioma
+    }, [title, description, selectedPlaybackId]);
 
     return (
         <section
             id={id}
             ref={sectionRef}
-            style={{ height: "100dvh" }}
-            className="relative w-full flex items-center justify-center overflow-hidden bg-campana-bg-about"
+            // style={{ height: "100dvh" }}
+            className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-campana-bg-about"
         >
             {/* PABLO IMAGE */}
             <div className="absolute inset-0 top-0 -right-20 lg:right-6 lg:left-auto  z-0 pointer-events-none">
@@ -268,7 +245,7 @@ export default function InvestmentSection({
             {/* MAIN CONTENT */}
             <div
                 ref={mainContentRef}
-                className="relative z-30 flex flex-col items-center justify-center w-full max-w-8xl  h-full gap-4"
+                className="relative z-30 flex flex-col items-center justify-center w-full max-w-8xl  h-full gap-4 pb-10 md:pb-10"
             >
                 <div
                     ref={headingRevealRef}
@@ -360,7 +337,7 @@ export default function InvestmentSection({
                         {/* CTA debajo del video */}
                         <div
                             ref={ctaRef}
-                            className="flex flex-col items-center w-[400px] md:w-[1000px] opacity-100 pointer-events-auto mb-8 mt-4"
+                            className="flex flex-col items-center w-[400px] md:w-[1000px] opacity-100 pointer-events-auto  mt-4"
                         >
                             {cta && (
                                 <button

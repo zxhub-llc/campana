@@ -65,34 +65,28 @@ export function AboutUsSection({ id, about }: AboutUsProps) {
         if (!sectionRef.current) return;
 
         const ctx = gsap.context(() => {
-            gsap.set(bgLayerRef.current, { opacity: 0 });
+            const isMobileSize = window.innerWidth <= 1024;
 
+            // --- SETEOS INICIALES DIFERENCIADOS ---
+            gsap.set(bgLayerRef.current, { opacity: isMobileSize ? 0.5 : 0 });
+
+            // En mobile el IntroText nace muerto (oculto)
             gsap.set(introTextRef.current, {
-                opacity: 1,
-                pointerEvents: "auto",
+                opacity: isMobileSize ? 0 : 1,
+                display: isMobileSize ? "none" : "flex",
+                pointerEvents: isMobileSize ? "none" : "auto"
             });
 
-            gsap.set(textGroupRef.current, {
-                opacity: 0,
-                y: 0,
-            });
-
-            gsap.set(videoContainerRef.current, {
-                height: 0,
-                overflow: "hidden",
-            });
-
-            gsap.set(contentRef.current, {
-                opacity: 1,
-            });
-
-            gsap.set(scrollOverlayRef.current, { opacity: 0 });
+            gsap.set(textGroupRef.current, { opacity: 0, y: 0 });
+            gsap.set(videoContainerRef.current, { height: 0, overflow: "hidden" });
+            gsap.set(contentRef.current, { opacity: 1 });
 
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=400%",
+                    // En mobile podemos hacer el scroll un poco más corto (300%) si prefieres
+                    end: isMobileSize ? "+=200%" : "+=400%",
                     scrub: true,
                     pin: true,
                     pinSpacing: true,
@@ -108,71 +102,48 @@ export function AboutUsSection({ id, about }: AboutUsProps) {
                 },
             });
 
-            tl.to({}, { duration: 1 });
+            // --- FASES DE LA ANIMACIÓN ---
 
-            // PHASE 1: Background Reveal
+            // PHASE 1 & 2: Solo tienen duración en Desktop
             tl.to(bgLayerRef.current, {
                 opacity: 0.5,
+                duration: isMobileSize ? 0.1 : 1
             });
 
-            // PHASE 2: Intro Text Fade Out
-            tl.to(
-                introTextRef.current,
-                {
-                    opacity: 0,
-                    duration: 1,
-                    ease: "power2.inOut",
-                },
-                "-=0.4"
-            );
-            tl.set(introTextRef.current, { pointerEvents: "none" });
+            tl.to(introTextRef.current, {
+                opacity: 0,
+                duration: isMobileSize ? 0 : 1, // Desaparece instantáneo en mobile
+                ease: "power2.inOut",
+            }, isMobileSize ? 0 : "-=0.4");
 
-            // PHASE 3: Logo Fade In (Still Centered as Video height is 0)
-            tl.to(
-                textGroupRef.current,
-                {
-                    opacity: 1,
-                    duration: 1,
-                    ease: "power2.out",
+            // PHASE 3: Logo Fade In (Aparece rápido en mobile)
+            tl.to(textGroupRef.current, {
+                opacity: 1,
+                duration: isMobileSize ? 0.5 : 1,
+                ease: "power2.out",
+            });
+
+            // PHASE 4: Video Reveal (Se mantiene igual, es el core del content)
+            tl.to(videoContainerRef.current, {
+                height: "auto",
+                duration: isMobileSize ? 1 : 1.5,
+                ease: "power2.inOut",
+                onReverseComplete: () => {
+                    videoRef.current?.pause();
+                    setIsPlaying(false);
                 }
-            );
+            }, "+=0.2");
 
-            // PHASE 4: Video Reveal (Naturally pushes Logo UP)
-            tl.to(
-                videoContainerRef.current,
-                {
-                    height: "auto",
-                    duration: 1.5,
-                    ease: "power2.inOut",
-                    onReverseComplete: () => {
-                        videoRef.current?.pause();
-                        setIsPlaying(false);
-                    }
-                },
-                "+=0.2"
-            );
+            // PHASE 5: Content Final Opacity
+            tl.to(contentRef.current, {
+                opacity: 1,
+                duration: 1.2,
+                ease: "power2.out",
+            }, "<");
 
-            // PHASE 5: Exit / Dark Overlay
-            // tl.to(
-            //     scrollOverlayRef.current,
-            //     {
-            //         opacity: 1,
-            //         duration: 1,
-            //     },
-            //     "<+=0.5"
-            // );
+            // Espacio final de respiro
+            tl.to({}, { duration: isMobileSize ? 1 : 2 });
 
-            tl.to(
-                contentRef.current,
-                {
-                    opacity: 1,
-                    duration: 1.2,
-                    ease: "power2.out",
-                },
-                "<"
-            );
-
-            tl.to({}, { duration: 2 });
         }, sectionRef);
 
         return () => ctx.revert();

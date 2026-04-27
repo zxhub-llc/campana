@@ -52,16 +52,16 @@ export default function HeroLogo({
             // gsap.set(scrollOverlayRef.current, { opacity: 0 });
             gsap.set(introRef.current, { scale: 1 });
 
+            // HeroLogo.tsx
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=200%",
+                    end: isMobile ? "+=60%" : "+=200%",
                     scrub: true,
-                    pin: true,
-                    pinSpacing: false,
+                    pin: isMobile ? false : true,
+                    pinSpacing: isMobile ? false : false,
                     anticipatePin: 1,
-                    pinType: "transform"
                 }
             });
 
@@ -87,7 +87,7 @@ export default function HeroLogo({
 
     return (
         <section id={id} ref={sectionRef} className="relative z-10 pointer-events-none">
-            <div className="h-screen overflow-hidden relative">
+            <div className="md:h-screen h-[60vh] overflow-hidden relative">
                 <div className="absolute inset-0 bg-linear-to-b from-campana-bg-hover to-black" />
                 {introSrc && (
                     <div ref={introRef} className="absolute inset-0">
@@ -98,7 +98,15 @@ export default function HeroLogo({
                             autoPlay
                             playsInline
                             preload="auto"
-                            className="w-full h-full object-cover pointer-events-none object-right"
+                            className="w-full h-full object-contain md:object-cover pointer-events-none object-top md:object-right"
+                        />
+                        <Image
+                            src="/assets/bggradient.png"
+                            alt="Background Gradient"
+                            fill
+                            priority
+                            unoptimized={true}
+                            className="object-cover absolute inset-0 -z-10 pointer-events-none block md:hidden -rotate-180"
                         />
                     </div>
                 )}
