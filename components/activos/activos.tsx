@@ -77,7 +77,7 @@ export function ActivosSection({
             if (descriptionRef.current) {
                 ScrollTrigger.create({
                     trigger: descriptionRef.current,
-                    start: "top 10%",
+                    start: "top 8%",
                     end: () => `+=${window.innerHeight}`,
                     pin: sectionRef.current,
                     pinSpacing: true,

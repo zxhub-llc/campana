@@ -92,7 +92,7 @@ export function ProjectsCardsSection({
       if (descriptionRef.current) {
         ScrollTrigger.create({
           trigger: descriptionRef.current,
-          start: "top -10%",
+          start: "top -6%",
           end: () => `+=${window.innerHeight * 1.2}`,
           pin: sectionRef.current,
           pinSpacing: true,
@@ -151,7 +151,7 @@ export function ProjectsCardsSection({
       ref={sectionRef}
       className="w-screen bg-campana-bg-about flex items-center justify-center overflow-hidden z-60"
     >
-      <div ref={contentRevealRef} className="w-full h-auto py-20">
+      <div ref={contentRevealRef} className="w-full h-auto py-24">
         <div className="w-full max-w-7xl mx-auto px-6 text-center flex flex-col items-center justify-center gap-8 md:gap-8 pb-10 md:pb-30 overflow-hidden">
           {highlight && (
             <span className="text-[#001D3D] text-sm md:text-lg font-sans font-normal tracking-tighter uppercase flex items-center justify-center gap-2 lining-nums">
@@ -188,6 +188,7 @@ export function ProjectsCardsSection({
           )}
         </div>
         <Carousel items={cards} active={isCarouselActive} />
+        <div className="h-6"></div>
       </div>
     </section>
   );
