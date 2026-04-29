@@ -19,20 +19,18 @@ interface AboutUsProps {
 
 export function AboutUsSection({ id, about }: AboutUsProps) {
     const sectionRef = useRef<HTMLDivElement>(null);
-
-    const introTextRef = useRef<HTMLDivElement>(null);
     const bgLayerRef = useRef<HTMLDivElement>(null);
+    const introTextRef = useRef<HTMLDivElement>(null);
     const scrollOverlayRef = useRef<HTMLDivElement>(null);
-
-    const subtitleRef = useRef<HTMLHeadingElement>(null);
     const textGroupRef = useRef<HTMLDivElement>(null);
     const videoContainerRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
-
     const videoRef = useRef<HTMLVideoElement>(null);
-    const [isPlaying, setIsPlaying] = useState(false); // Inicia en pausa
+    // --- ESTADOS PARA EL REPRODUCTOR ---
+    const [isPlaying, setIsPlaying] = useState(false);
     const [isMuted, setIsMuted] = useState(true);
-
+    const [showControls, setShowControls] = useState(true);
+    const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [isMobile, setIsMobile] = useState(false);
 
     const introSrc = about.background_desktop;
@@ -46,6 +44,28 @@ export function AboutUsSection({ id, about }: AboutUsProps) {
             (word) =>
                 word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
         );
+
+    const handleMouseMove = () => {
+        setShowControls(true);
+        if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
+        if (isPlaying) {
+            controlsTimeoutRef.current = setTimeout(() => {
+                setShowControls(false);
+            }, 2500);
+        }
+    };
+
+    useEffect(() => {
+        if (!isPlaying) {
+            setShowControls(true);
+            if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
+        } else {
+            handleMouseMove();
+        }
+        return () => {
+            if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
+        };
+    }, [isPlaying]);
 
     useEffect(() => {
         const mql = window.matchMedia("(max-width: 1024px)");
@@ -155,86 +175,81 @@ export function AboutUsSection({ id, about }: AboutUsProps) {
             ref={sectionRef}
             className="relative w-full h-screen flex items-center overflow-hidden z-50 bg-campana-bg-about"
         >
-            {/* BACKGROUND OVERLAY */}
+            {/* BACKGROUND OVERLAY - Nivel base */}
             <div
                 ref={bgLayerRef}
                 className="absolute inset-0 bg-campana-bg-about backdrop-blur-sm z-[1]"
             />
 
             <div className="h-full w-full relative overflow-hidden flex items-center justify-center">
-                {/* INTRO TEXT */}
+
+                {/* INTRO TEXT - Z-INDEX ALTO y habilitamos interacción */}
                 {introSrc && (
                     <div
                         ref={introTextRef}
                         className="absolute inset-0 z-40 flex flex-col justify-center gap-2 pointer-events-auto"
                     >
                         {introWords.map((word, index) => (
-                            <div
-                                key={index}
-                                className="w-[80vw] max-w-[900px] h-[120px] md:h-64 -mb-10"
-                            >
+                            <div key={index} className="w-[80vw] max-w-[900px] h-[120px] md:h-64 -mb-10">
                                 <TextHoverEffect text={word} />
                             </div>
                         ))}
                     </div>
                 )}
 
-                {/* DARK OVERLAY */}
+                {/* OVERLAY - Bloqueamos interacción para que pase al texto */}
                 <div
                     ref={scrollOverlayRef}
-                    className="absolute inset-0 z-20 pointer-events-none bg-campana-bg-about backdrop-blur-sm"
+                    className="absolute inset-0 z-30 pointer-events-none bg-campana-bg-about backdrop-blur-sm"
                 />
 
-                {/* CONTENT */}
+                {/* CONTENT - Aquí está el truco: pointer-events-none en el contenedor */}
                 <div
                     ref={contentRef}
-                    className="relative z-30 flex flex-col items-center justify-center w-full max-w-8xl mx-auto h-full gap-4"
+                    className="relative z-50 flex flex-col items-center justify-center w-full max-w-8xl mx-auto h-full gap-4 pointer-events-none"
                 >
-                    <div
-                        ref={textGroupRef}
-                        className="flex flex-col items-center w-full text-center"
-                    >
+                    {/* LOGO */}
+                    <div ref={textGroupRef} className="flex flex-col items-center w-full text-center">
                         <div className="relative w-[300px] md:w-[500px] h-[150px]">
-                            <Image
-                                src="/assets/logo.svg"
-                                alt="Logo"
-                                fill
-                                priority
-                                unoptimized={true}
-                                className="object-contain pointer-events-none invert"
-                            />
+                            <Image src="/assets/logo.svg" alt="Logo" fill className="invert" />
                         </div>
                     </div>
+
+                    {/* VIDEO CONTAINER - Reactivamos interacción solo aquí */}
                     {selectedPlaybackId && (
                         <div
                             ref={videoContainerRef}
-                            className="relative w-full aspect-2430/1080 shadow-2xl overflow-hidden "
+                            onMouseMove={handleMouseMove}
+                            onMouseLeave={() => isPlaying && setShowControls(false)}
+                            className="relative w-full aspect-2430/1080 shadow-2xl overflow-hidden group pointer-events-auto"
                         >
                             <video
                                 ref={videoRef}
                                 src={selectedPlaybackId}
                                 loop
-                                muted
-                                // autoPlay
+                                muted={isMuted}
                                 playsInline
                                 className="w-full object-contain"
                             />
-                            <div className="absolute bottom-4 left-4 flex items-center gap-2 z-10">
+
+                            {/* BOTÓN PLAY */}
+                            <div className={`absolute inset-0 flex items-center justify-center z-10 pointer-events-none transition-opacity duration-500 ${(showControls || !isPlaying) ? "opacity-100" : "opacity-0"}`}>
                                 <button
-                                    onClick={() => {
+                                    onClick={(e) => {
+                                        e.stopPropagation();
                                         if (!videoRef.current) return;
                                         isPlaying ? videoRef.current.pause() : videoRef.current.play();
                                         setIsPlaying(!isPlaying);
                                     }}
-                                    className="h-9 w-9 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/70 transition-colors cursor-pointer pointer-events-auto"
+                                    className="h-20 w-20 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/70 transition-colors cursor-pointer pointer-events-auto"
                                 >
                                     {isPlaying ? (
-                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
+                                        <svg width="24" height="24" viewBox="0 0 14 14" fill="currentColor">
                                             <rect x="2" y="1" width="4" height="12" rx="1" />
                                             <rect x="8" y="1" width="4" height="12" rx="1" />
                                         </svg>
                                     ) : (
-                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
+                                        <svg width="24" height="24" viewBox="0 0 14 14" fill="currentColor">
                                             <path d="M3 1.5l9 5.5-9 5.5V1.5z" />
                                         </svg>
                                     )}
