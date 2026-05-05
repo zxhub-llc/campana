@@ -135,7 +135,7 @@ export default function InvestmentSection({
             tl.to(mainContentRef.current, { opacity: 1, duration: 1 });
 
             tl.to(headingRevealRef.current, {
-                y: -50,
+                y: -60,
                 opacity: 0,
                 height: 0,
                 marginBottom: 0,
@@ -253,12 +253,12 @@ export default function InvestmentSection({
                 >
                     <div className="relative w-full flex flex-col">
                         {highlight && (
-                            <span className="text-campana-primary font-bold uppercase block mb-4 text-sm">
+                            <span className="text-campana-primary font-bold uppercase mb-4 text-sm hidden">
                                 {highlight}
                             </span>
                         )}
                         {title && (
-                            <h2 className="text-campana-primary text-5xl md:text-7xl font-sans font-normal leading-[0.9] tracking-tighter mb-5">
+                            <h2 className="text-campana-primary text-5xl md:text-7xl font-sans font-normal leading-[0.9] tracking-tighter mt-6">
                                 {(() => {
                                     const words = title.split(" ");
                                     const lastWord = words.pop();
@@ -273,7 +273,7 @@ export default function InvestmentSection({
                         )}
                         {description && (
                             <p
-                                className="text-[#001D3D] text-base md:text-lg tracking-tight leading-5 font-sans"
+                                className="text-[#001D3D] text-base md:text-lg tracking-tight leading-5 font-sans hidden"
                                 dangerouslySetInnerHTML={{ __html: description }}
                             />
                         )}
@@ -285,7 +285,7 @@ export default function InvestmentSection({
                             ref={videoContainerRef}
                             onMouseMove={handleMouseMove}
                             onMouseLeave={() => isPlaying && setShowControls(false)}
-                            className="relative w-full aspect-1920/1080 md:w-[90%] shadow-2xl overflow-hidden rounded-b-lg group mt-0 md:-mt-4"
+                            className="relative w-full aspect-1920/1080 md:w-[90%] shadow-2xl overflow-hidden rounded-lg group mt-6"
                         >
                             <video
                                 ref={videoRef}
@@ -294,7 +294,7 @@ export default function InvestmentSection({
                                 muted={isMuted}
                                 playsInline
                                 preload="auto"
-                                className="w-full h-full object-fit md:object-cover bottom-0"
+                                className="w-full h-full object-fit md:object-cover"
                             />
                             <div className={`absolute inset-0 flex items-center justify-center z-10 pointer-events-none transition-opacity duration-500 ${(showControls || !isPlaying) ? "opacity-100" : "opacity-0"}`}>
                                 <button
@@ -337,7 +337,7 @@ export default function InvestmentSection({
                         {/* CTA debajo del video */}
                         <div
                             ref={ctaRef}
-                            className="flex flex-col items-center w-[400px] md:w-[1000px] opacity-100 pointer-events-auto  mt-4"
+                            className="flex flex-col items-center w-[400px] md:w-[1000px] opacity-100 pointer-events-auto hidden"
                         >
                             {cta && (
                                 <button
