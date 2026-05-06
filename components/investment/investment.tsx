@@ -80,6 +80,15 @@ export default function InvestmentSection({
     useLayoutEffect(() => {
         if (!sectionRef.current) return;
 
+        if (videoContainerRef.current) {
+            gsap.set(videoContainerRef.current, { height: 0, overflow: "hidden", clearProps: "none" });
+        }
+        if (videoRef.current) {
+            videoRef.current.pause();
+            videoRef.current.currentTime = 0;
+        }
+        setIsPlaying(false);
+
         // Limpieza de contextos previos para evitar conflictos al cambiar idioma
         const ctx = gsap.context(() => {
             // ESTADOS INICIALES (Tus originales)
@@ -169,7 +178,24 @@ export default function InvestmentSection({
 
         }, sectionRef);
 
-        return () => ctx.revert();
+        return () => {
+            ctx.revert();
+
+            // ✅ Cleanup explícito en el teardown también
+            if (videoRef.current) {
+                videoRef.current.pause();
+                videoRef.current.currentTime = 0;
+            }
+            setIsPlaying(false);
+
+            // Forzar reset de los elementos animados para que el próximo mount
+            // empiece desde el estado inicial correcto
+            if (videoContainerRef.current) {
+                videoContainerRef.current.style.height = "0px";
+                videoContainerRef.current.style.overflow = "hidden";
+            }
+        };
+
         // AÑADIMOS DEPENDENCIAS: Se reinicia cuando cambian los textos del idioma
     }, [title, description, selectedPlaybackId]);
 
