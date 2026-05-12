@@ -245,7 +245,7 @@ export default function BiographyCompany({ id, highlight, short_description, des
                         </motion.div>
                     </div>
 
-                    <div className="mx-auto h-full grid grid-cols-1 lg:grid-cols-12 lg:items-center px-0 pt-2 relative">
+                    <div className="mx-auto h-full grid grid-cols-1 lg:grid-cols-12 lg:items-center px-0 pt-0 md:pt-2 relative">
                         <div className="lg:col-span-5 h-[65vh] lg:h-full absolute bottom-0 left-0 lg:relative w-full z-10 pointer-events-none" ref={bgImageRef}>
                             {currentImage && (
                                 <Image
