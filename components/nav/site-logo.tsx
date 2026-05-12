@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import type { SiteInfo } from "@/lib/wordpress.d";
+import { useState } from "react";
 
 export default function SiteLogo({ siteInfo }: { siteInfo: SiteInfo | null }) {
   const router = useRouter();
@@ -13,6 +14,9 @@ export default function SiteLogo({ siteInfo }: { siteInfo: SiteInfo | null }) {
 
   const locale = pathname.split("/")[1] || "en";
   const homePath = `/${locale}`;
+  const [logoSrc, setLogoSrc] = useState(
+    siteInfo?.logo?.url || "/assets/blanco.png"
+  )
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (pathname === homePath) {
@@ -28,8 +32,9 @@ export default function SiteLogo({ siteInfo }: { siteInfo: SiteInfo | null }) {
       className="flex items-center h-full"
     >
       <Image
-        src={siteInfo.logo.url}
+        src={logoSrc}
         alt={siteInfo.logo.alt || "Logo"}
+        onError={() => setLogoSrc("/assets/blanco.png")}
         width={300}
         height={120}
         style={{ width: "200px", height: "auto" }}

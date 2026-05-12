@@ -88,7 +88,7 @@ export default function HeroLogo({
 
     return (
         <section id={id} ref={sectionRef} className="relative z-10 pointer-events-none bg-linear-to-b from-campana-bg-hover to-black">
-            <div className="md:h-screen h-[57vh] w-screen overflow-hidden relative">
+            <div className="md:h-screen h-[57svh] md:h-screen min-h-[420px] w-screen overflow-hidden relative">
                 <div className="absolute inset-0 bg-linear-to-b from-campana-bg-hover to-black" />
                 {introSrc && (
                     <div ref={introRef} className="absolute inset-0">
@@ -99,7 +99,7 @@ export default function HeroLogo({
                             autoPlay
                             playsInline
                             preload="auto"
-                            className="w-full h-full object-contain md:object-cover pointer-events-none object-top md:object-right"
+                            className="w-full h-full object-cover pointer-events-none object-top md:object-right"
                         />
                         <Image
                             src="/assets/bggradient.png"
