@@ -33,6 +33,8 @@ export function VideoPreloadProvider({
             "https://d12uzar9rhxbes.cloudfront.net/GBM_HD_LOW.mp4",
             "https://d12uzar9rhxbes.cloudfront.net/herosection/ProyectosCuadrado.mp4",
             "https://d12uzar9rhxbes.cloudfront.net/herosection/Pablo-Desktop.mp4",
+            "https://d12uzar9rhxbes.cloudfront.net/aboutsection/AboutDesktop.mp4",
+            "https://d12uzar9rhxbes.cloudfront.net/aboutsection/AboutMobile.mp4",
             // "https://d12uzar9rhxbes.cloudfront.net/businessunits/AllFields.mp4",
             // "https://d12uzar9rhxbes.cloudfront.net/businessunits/Bell.mp4",
             // "https://d12uzar9rhxbes.cloudfront.net/businessunits/BellFactor.mp4",
@@ -57,8 +59,6 @@ export function VideoPreloadProvider({
             "https://d12uzar9rhxbes.cloudfront.net/businessunits/Fotos/Millerent.png",
             "https://d12uzar9rhxbes.cloudfront.net/businessunits/Fotos/MMH.png",
             "https://d12uzar9rhxbes.cloudfront.net/businessunits/Fotos/Seguros.png",
-            "https://d12uzar9rhxbes.cloudfront.net/aboutsection/AboutDesktop.mp4",
-            "https://d12uzar9rhxbes.cloudfront.net/aboutsection/AboutMobile.mp4",
         ];
 
         urls.forEach(preloadVideo);

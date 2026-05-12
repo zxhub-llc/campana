@@ -311,7 +311,7 @@ export default function BiographyCompany({ id, highlight, short_description, des
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={isVisible ? { opacity: 1, y: 0 } : {}}
                                         transition={{ delay: 0.4 }}
-                                        className=" text-left md:text-right py-4 mt-2">
+                                        className=" text-left md:text-right py-4 mt-2 w-full md:max-w-3xl">
                                         <p className=" text-2xl sm:text-3xl mb-2 font-ivy-presto italic text-white leading-none">
                                             {data.name}
                                         </p>

@@ -251,6 +251,7 @@ export function AboutUsSection({ id, about }: AboutUsProps) {
                                 src={selectedPlaybackId}
                                 loop
                                 muted={isMuted}
+                                preload="auto"
                                 playsInline
                                 className="w-full object-contain"
                             />
