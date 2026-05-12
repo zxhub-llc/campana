@@ -261,16 +261,16 @@ export default function BiographyCompany({ id, highlight, short_description, des
                         </div>
 
                         <div className="lg:col-span-7 flex flex-col items-start lg:items-start justify-center relative w-full h-full lg:h-auto">
-                            <div className="absolute inset-0 w-full h-full flex justify-start lg:justify-start items-center mt-0 lg:mt-0 pointer-events-none z-40">
+                            <div className="absolute inset-0 w-full h-full flex justify-center lg:justify-start items-center pointer-events-none z-40 px-4 sm:px-6 md:px-10">
+
                                 <div
                                     ref={textRef}
-                                    className="flex flex-col text-white px-8 md:px-0 py-10 md:max-w-4xl relative pointer-events-auto left-0 md:-left-10"
-                                >
+                                    className=" flex flex-col text-white w-full max-w-[95%] sm:max-w-[90%] md:max-w-3xl lg:max-w-4xl relative pointer-events-auto left-0 lg:-left-10 py-8 md:py-10 mt-10 sm:mt-14 md:mt-0">
+
                                     <motion.span
                                         initial={{ opacity: 0 }}
                                         animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-                                        className="text-campana-secondary font-inter font-bold uppercase block mb-4 text-center md:text-left"
-                                    >
+                                        className=" text-campana-secondary font-inter font-bold uppercase block mb-3 md:mb-4 text-center md:text-left text-xs sm:text-sm tracking-wide">
                                         {data.highlight}
                                     </motion.span>
 
@@ -278,11 +278,11 @@ export default function BiographyCompany({ id, highlight, short_description, des
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={isVisible ? { opacity: 1, y: 0 } : {}}
                                         transition={{ delay: 0.2 }}
-                                        className="text-5xl md:text-8xl lg:text-7xl font-sans font-normal tracking-tighter leading-[0.85] mb-10 text-center md:text-left"
-                                    >
+                                        className=" text-[2.5rem] leading-[0.9] sm:text-6xl md:text-7xl lg:text-7xl font-sans font-normal tracking-tighter mb-6 md:mb-10 text-center md:text-left break-words">
                                         {(() => {
                                             const words = data.title.split(" ");
                                             const lastWord = words.pop();
+
                                             return (
                                                 <>
                                                     {words.join(" ")}{" "}
@@ -298,7 +298,7 @@ export default function BiographyCompany({ id, highlight, short_description, des
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={isVisible ? { opacity: 1, y: 0 } : {}}
                                         transition={{ delay: 0.4 }}
-                                        className="text-white text-base md:text-lg leading-normal tracking-tighter space-y-4 reveal-description text-right font-inter font-normal md:max-w-3xl"
+                                        className=" text-white text-sm sm:text-base md:text-lg leading-relaxed tracking-tight space-y-4 reveal-description font-inter font-normal w-full md:max-w-3xl text-left md:text-right"
                                         style={{
                                             textAlign: "justify",
                                             textAlignLast: "left",
@@ -311,12 +311,12 @@ export default function BiographyCompany({ id, highlight, short_description, des
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={isVisible ? { opacity: 1, y: 0 } : {}}
                                         transition={{ delay: 0.4 }}
-                                        className="text-right py-4"
-                                    >
-                                        <p className="text-3xl mb-2 font-ivy-presto italic text-white leading-none">
+                                        className=" text-left md:text-right py-4 mt-2">
+                                        <p className=" text-2xl sm:text-3xl mb-2 font-ivy-presto italic text-white leading-none">
                                             {data.name}
                                         </p>
-                                        <p className="text-campana-secondary text-sm md:text-lg font-ivy-presto italic">
+
+                                        <p className=" text-campana-secondary text-xs sm:text-sm md:text-lg font-ivy-presto italic">
                                             {data.role}
                                         </p>
                                     </motion.div>
@@ -325,34 +325,60 @@ export default function BiographyCompany({ id, highlight, short_description, des
                                         initial={{ opacity: 0 }}
                                         animate={isVisible ? { opacity: 1 } : {}}
                                         transition={{ delay: 0.6 }}
-                                        className="mt-8 flex flex-col sm:flex-row items-center gap-10"
-                                    >
+                                        className=" mt-6 md:mt-8 flex flex-col sm:flex-row items-center md:items-start gap-4 md:gap-10">
+
                                         {data.cta && data.mux_playback_id && (
                                             <Modal>
+
                                                 <ModalTrigger asChild>
+
                                                     <Button
                                                         type="button"
-                                                        className="px-6 py-6 hover:bg-campana-secondary group rounded-full bg-white w-full md:w-fit transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-4 cursor-pointer text-campana-primary hover:text-white relative z-50"
-                                                    >
-                                                        <div className="flex items-center gap-4">
-                                                            <span className="font-semibold">{data.cta}</span>
-                                                            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-campana-primary text-white">
+                                                        className=" px-5 md:px-6 py-5 md:py-6 hover:bg-campana-secondary group rounded-full bg-white w-full sm:w-auto transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-4 cursor-pointer text-campana-primary hover:text-white relative z-50">
+
+                                                        <div className="flex items-center gap-3 md:gap-4">
+
+                                                            <span className="font-semibold text-sm md:text-base">
+                                                                {data.cta}
+                                                            </span>
+
+                                                            <div className=" flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-full bg-campana-primary text-white">
                                                                 <Play size={16} fill="currentColor" />
                                                             </div>
+
                                                         </div>
+
                                                     </Button>
+
                                                 </ModalTrigger>
+
                                                 <ModalBody>
-                                                    <ModalContent className="max-w-6xl p-0 overflow-hidden bg-black flex flex-col rounded-3xl">
-                                                        <video autoPlay controls playsInline className="w-full aspect-video object-cover">
-                                                            <source src={data.mux_playback_id} type="video/mp4" />
+
+                                                    <ModalContent className="max-w-6xl p-0 overflow-hidden bg-black flex flex-col rounded-2xl md:rounded-3xl mx-4">
+
+                                                        <video
+                                                            autoPlay
+                                                            controls
+                                                            playsInline
+                                                            className="w-full aspect-video object-cover"
+                                                        >
+                                                            <source
+                                                                src={data.mux_playback_id}
+                                                                type="video/mp4"
+                                                            />
                                                         </video>
+
                                                     </ModalContent>
+
                                                 </ModalBody>
+
                                             </Modal>
                                         )}
+
                                     </motion.div>
+
                                 </div>
+
                             </div>
                             <div
                                 ref={collisionContainerRef}
