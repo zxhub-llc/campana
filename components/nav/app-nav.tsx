@@ -33,7 +33,7 @@ export default function AppNav({ menuItems, cta, languages, siteInfo }: AppNavPr
     const handleScroll = () => {
       const currentScroll = window.scrollY;
 
-      setIsAtTop(currentScroll === 0);
+      setIsAtTop(currentScroll <= 20);
 
       if (currentScroll <= 0) {
         setIsHidden(false);
@@ -55,7 +55,7 @@ export default function AppNav({ menuItems, cta, languages, siteInfo }: AppNavPr
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 w-full transition-transform duration-500",
+        "fixed top-0 left-0 right-0 z-[999] w-full transition-transform duration-500",
         isHidden ? "-translate-y-full" : "translate-y-0"
       )}
     >
