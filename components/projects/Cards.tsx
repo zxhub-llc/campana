@@ -62,6 +62,7 @@ export function ProjectsCardsSection({
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
+      const isMobile = window.innerWidth <= 1024;
 
       // 1. REVEAL (Se mantiene igual)
       gsap.set(contentRevealRef.current, {
@@ -91,8 +92,12 @@ export function ProjectsCardsSection({
 
       if (descriptionRef.current) {
         ScrollTrigger.create({
-          trigger: descriptionRef.current,
-          start: "top -6%",
+          trigger: isMobile
+            ? sectionRef.current
+            : descriptionRef.current,
+          start: isMobile
+            ? "top top"
+            : "top -6%",
           end: () => `+=${window.innerHeight * 1.2}`,
           pin: sectionRef.current,
           pinSpacing: true,
@@ -151,7 +156,7 @@ export function ProjectsCardsSection({
       ref={sectionRef}
       className="w-screen bg-campana-bg-about flex items-center justify-center overflow-hidden z-60"
     >
-      <div ref={contentRevealRef} className="w-full h-auto py-24">
+      <div ref={contentRevealRef} className="w-full h-auto py-16 md:py-24">
         <div className="w-full max-w-7xl mx-auto px-6 text-center flex flex-col items-center justify-center gap-8 md:gap-8 pb-10 md:pb-30 overflow-hidden">
           {highlight && (
             <span className="text-[#001D3D] text-sm md:text-lg font-sans font-normal tracking-tighter uppercase flex items-center justify-center gap-2 lining-nums">
@@ -188,7 +193,7 @@ export function ProjectsCardsSection({
           )}
         </div>
         <Carousel items={cards} active={isCarouselActive} />
-        <div className="h-6"></div>
+        <div className="h-6 hidden md:block"></div>
       </div>
     </section>
   );

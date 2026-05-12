@@ -6,6 +6,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Volume2, VolumeX } from "lucide-react";
+import { useVideoPreload } from "@/hooks/useVideoPreload";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -75,7 +76,17 @@ export default function InvestmentSection({
         return () => mql.removeEventListener("change", onChange);
     }, []);
 
-    const selectedPlaybackId = isMobile ? video_mobile || video : video || video_mobile;
+    const selectedPlaybackId = isMobile
+        ? video_mobile || video
+        : video || video_mobile;
+
+    const { preloadVideo } = useVideoPreload();
+
+    useEffect(() => {
+        if (!selectedPlaybackId) return;
+
+        preloadVideo(selectedPlaybackId);
+    }, [selectedPlaybackId]);
 
     useLayoutEffect(() => {
         if (!sectionRef.current) return;
@@ -89,9 +100,9 @@ export default function InvestmentSection({
         }
         setIsPlaying(false);
 
-        // Limpieza de contextos previos para evitar conflictos al cambiar idioma
         const ctx = gsap.context(() => {
-            // ESTADOS INICIALES (Tus originales)
+            const isMobileView = window.innerWidth <= 1024;
+
             gsap.set([ctaRef.current, mainContentRef.current, scrollOverlayRef.current], {
                 opacity: 0,
                 visibility: "visible"
@@ -107,7 +118,7 @@ export default function InvestmentSection({
                     trigger: sectionRef.current,
                     start: "top top",
                     end: () => `+=${window.innerHeight * 5}`,
-                    scrub: true, // Tu scrub original
+                    scrub: true,
                     pin: true,
                     pinSpacing: true,
                     anticipatePin: 1,
@@ -123,7 +134,6 @@ export default function InvestmentSection({
                 },
             });
 
-            // TU ANIMACIÓN ORIGINAL SIN CAMBIOS
             tl.to(extraRef.current, {
                 opacity: 1,
                 scale: 1,
@@ -143,15 +153,16 @@ export default function InvestmentSection({
             );
             tl.to(mainContentRef.current, { opacity: 1, duration: 1 });
 
-            tl.to(headingRevealRef.current, {
-                y: -60,
-                opacity: 0,
-                height: 0,
-                marginBottom: 0,
-                duration: 1.5,
-                ease: "power2.inOut"
-            });
-
+            if (window.innerWidth >= 1024) {
+                tl.to(headingRevealRef.current, {
+                    y: -60,
+                    opacity: 0,
+                    height: 0,
+                    marginBottom: 0,
+                    duration: 1.5,
+                    ease: "power2.inOut"
+                });
+            }
             tl.to(
                 videoContainerRef.current,
                 {
@@ -165,8 +176,24 @@ export default function InvestmentSection({
                         }
                     }
                 },
-                "-=1.2"
+                window.innerWidth >= 1024 ? "-=1.2" : ">+=0.2"
             );
+
+            // tl.to(
+            //     videoContainerRef.current,
+            //     {
+            //         height: "auto",
+            //         duration: 1.5,
+            //         ease: "power2.inOut",
+            //         onReverseComplete: () => {
+            //             if (videoRef.current) {
+            //                 videoRef.current.pause();
+            //                 setIsPlaying(false);
+            //             }
+            //         }
+            //     },
+            //     "-=1.2"
+            // );
 
             tl.to(ctaRef.current, {
                 opacity: 1,
@@ -181,29 +208,23 @@ export default function InvestmentSection({
         return () => {
             ctx.revert();
 
-            // ✅ Cleanup explícito en el teardown también
             if (videoRef.current) {
                 videoRef.current.pause();
                 videoRef.current.currentTime = 0;
             }
             setIsPlaying(false);
-
-            // Forzar reset de los elementos animados para que el próximo mount
-            // empiece desde el estado inicial correcto
             if (videoContainerRef.current) {
                 videoContainerRef.current.style.height = "0px";
                 videoContainerRef.current.style.overflow = "hidden";
             }
         };
 
-        // AÑADIMOS DEPENDENCIAS: Se reinicia cuando cambian los textos del idioma
     }, [title, description, selectedPlaybackId]);
 
     return (
         <section
             id={id}
             ref={sectionRef}
-            // style={{ height: "100dvh" }}
             className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-campana-bg-about"
         >
             {/* PABLO IMAGE */}
@@ -233,27 +254,22 @@ export default function InvestmentSection({
                             const words = secondary.split(" ");
                             const totalWords = words.length;
 
-                            // Si solo hay una palabra, no dividimos, solo aplicamos el estilo
                             if (totalWords === 1) {
                                 return <span className="font-ivy-presto italic">{words[0]}</span>;
                             }
 
-                            // Calculamos la mitad (hacia arriba si es impar)
                             const midIndex = Math.ceil(totalWords / 2);
 
                             const firstLine = words.slice(0, midIndex).join(" ");
                             const remainingWords = words.slice(midIndex);
 
-                            // Extraemos la última palabra para el span
                             const lastWord = remainingWords.pop();
                             const secondLineBase = remainingWords.join(" ");
 
                             return (
                                 <>
-                                    {/* Primera parte (la mayor cantidad) */}
                                     {firstLine}
                                     <br />
-                                    {/* Segunda parte con la última palabra estilizada */}
                                     {secondLineBase}{" "}
                                     <span className="font-ivy-presto italic">{lastWord}</span>
                                 </>
@@ -311,7 +327,7 @@ export default function InvestmentSection({
                             ref={videoContainerRef}
                             onMouseMove={handleMouseMove}
                             onMouseLeave={() => isPlaying && setShowControls(false)}
-                            className="relative w-full aspect-1920/1080 md:w-[90%] shadow-2xl overflow-hidden rounded-lg group mt-6"
+                            className="relative w-full aspect-none md:aspect-1920/1080 md:w-[90%] shadow-2xl overflow-hidden rounded-lg group mt-6"
                         >
                             <video
                                 ref={videoRef}
@@ -320,7 +336,7 @@ export default function InvestmentSection({
                                 muted={isMuted}
                                 playsInline
                                 preload="auto"
-                                className="w-full h-full object-fit md:object-cover"
+                                className="w-full object-contain"
                             />
                             <div className={`absolute inset-0 flex items-center justify-center z-10 pointer-events-none transition-opacity duration-500 ${(showControls || !isPlaying) ? "opacity-100" : "opacity-0"}`}>
                                 <button

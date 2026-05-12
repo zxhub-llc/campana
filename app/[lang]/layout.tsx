@@ -13,6 +13,7 @@ import AppTheme from "@/components/theme/app-theme";
 import { getMainMenu, getGlobalCTA, getActiveLanguages, getSiteInfo } from "@/lib/wordpress";
 import Footer from "@/components/nav/footer";
 import SmoothScroller from "@/components/smooth-scroller";
+import { VideoPreloadProvider } from "@/components/provider/video-preload-provider";
 
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -62,15 +63,17 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AppTheme>
-            <AppNav menuItems={menuItems} cta={cta} languages={wpLanguages} siteInfo={siteInfo} />
-            <SmoothScroller>
-              <main className="relative flex flex-col min-h-screen">
-                {children}
-              </main>
-              <Footer menuItems={menuItems} siteInfo={siteInfo} />
-            </SmoothScroller>
-          </AppTheme>
+          <VideoPreloadProvider>
+            <AppTheme>
+              <AppNav menuItems={menuItems} cta={cta} languages={wpLanguages} siteInfo={siteInfo} />
+              <SmoothScroller>
+                <main className="relative flex flex-col min-h-screen">
+                  {children}
+                </main>
+                <Footer menuItems={menuItems} siteInfo={siteInfo} />
+              </SmoothScroller>
+            </AppTheme>
+          </VideoPreloadProvider>
         </ThemeProvider>
         <Analytics />
       </body>

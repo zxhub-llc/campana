@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef, useState, useEffect } from "react";
 import Image from "next/image"
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useVideoPreload } from "@/hooks/useVideoPreload";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,6 +28,14 @@ export default function HeroLogo({
     const introSrc = isMobile
         ? bg_photo_mobile || bg_photo_desktop
         : bg_photo_desktop || bg_photo_mobile;
+
+    const { preloadVideo } = useVideoPreload();
+
+    useEffect(() => {
+        if (!introSrc) return;
+
+        preloadVideo(introSrc);
+    }, [introSrc]);
 
     useLayoutEffect(() => {
 
@@ -66,19 +75,11 @@ export default function HeroLogo({
             });
 
             tl.to(introRef.current, {
-                scale: 1.15,
-                // filter: "blur(20px)",
+                scale: 1,
                 duration: 1,
                 ease: "none",
                 immediateRender: false
             }, 0);
-
-            // tl.to(scrollOverlayRef.current, {
-            //     opacity: 1,
-            //     duration: 0.8,
-            //     ease: "power2.inOut"
-            // }, 0.1);
-
         }, sectionRef);
 
         return () => ctx.revert();
@@ -86,8 +87,8 @@ export default function HeroLogo({
     }, [introSrc]);
 
     return (
-        <section id={id} ref={sectionRef} className="relative z-10 pointer-events-none">
-            <div className="md:h-screen h-[60vh] overflow-hidden relative">
+        <section id={id} ref={sectionRef} className="relative z-10 pointer-events-none bg-linear-to-b from-campana-bg-hover to-black">
+            <div className="md:h-screen h-[57vh] w-screen overflow-hidden relative">
                 <div className="absolute inset-0 bg-linear-to-b from-campana-bg-hover to-black" />
                 {introSrc && (
                     <div ref={introRef} className="absolute inset-0">
@@ -110,10 +111,6 @@ export default function HeroLogo({
                         />
                     </div>
                 )}
-                {/* <div
-                    ref={scrollOverlayRef}
-                    className="absolute inset-0 z-10 pointer-events-none bg-linear-to-b from-campana-bg-hover to-black"
-                /> */}
             </div>
         </section>
     );

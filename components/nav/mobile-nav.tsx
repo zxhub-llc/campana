@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import type { AppMenuItem, GlobalCTA, SiteInfo } from '@/lib/wordpress.d'
+import type { AppMenuItem, SiteInfo } from '@/lib/wordpress.d'
 import type { WpLanguage } from '@/lib/wordpress'
 import gsap from "gsap"
 import { useScrollToSection } from '@/hooks/useScrollToSection'
@@ -27,6 +27,7 @@ export function MobileNav({
   const sidebarRef = useRef<HTMLDivElement>(null)
   const navRef = useRef<HTMLDivElement>(null)
   const timelineRef = useRef<gsap.core.Timeline | null>(null)
+  const overlayRef = useRef<HTMLDivElement>(null)
 
   const pathname = usePathname()
 
@@ -34,22 +35,40 @@ export function MobileNav({
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false)
     }
+
     window.addEventListener("keydown", handleKey)
+
     return () => window.removeEventListener("keydown", handleKey)
   }, [setOpen])
 
+  // 👇 evita flash inicial del menú abierto
   useLayoutEffect(() => {
-    if (!sidebarRef.current || !navRef.current) return
+    if (!sidebarRef.current || !navRef.current || !overlayRef.current) return
 
     const items = navRef.current.querySelectorAll(".nav-item")
     const sidebarWidth = sidebarRef.current.offsetWidth
 
-    gsap.set(sidebarRef.current, { x: -sidebarWidth })
-    gsap.set(items, { x: -sidebarWidth, opacity: 0 })
+    gsap.set(overlayRef.current, {
+      opacity: 0,
+      pointerEvents: "none",
+    })
+
+    gsap.set(sidebarRef.current, {
+      x: 0,
+    })
+
+    gsap.set(items, {
+      x: -sidebarWidth,
+      opacity: 0,
+    })
   }, [])
 
   useEffect(() => {
-    if (!sidebarRef.current || !navRef.current) return
+    if (
+      !sidebarRef.current ||
+      !navRef.current ||
+      !overlayRef.current
+    ) return
 
     const items = navRef.current.querySelectorAll(".nav-item")
 
@@ -58,14 +77,27 @@ export function MobileNav({
     }
 
     const sidebarWidth = sidebarRef.current.offsetWidth
+
     const tl = gsap.timeline()
 
     if (open) {
+
+      tl.set(overlayRef.current, {
+        pointerEvents: "auto",
+      })
+
+      tl.to(overlayRef.current, {
+        opacity: 1,
+        duration: 0.3,
+        ease: "power2.out",
+      })
+
       tl.to(sidebarRef.current, {
         x: 0,
         duration: 0.65,
         ease: "expo.out"
-      })
+      }, "<")
+
       tl.to(items, {
         x: 0,
         opacity: 1,
@@ -73,7 +105,9 @@ export function MobileNav({
         ease: "expo.out",
         stagger: 0.12
       }, "-=0.35")
+
     } else {
+
       tl.to(items, {
         x: -sidebarWidth,
         opacity: 0,
@@ -84,14 +118,26 @@ export function MobileNav({
           from: "end"
         }
       })
+
       tl.to(sidebarRef.current, {
         x: -sidebarWidth,
         duration: 0.55,
         ease: "expo.in"
       }, "-=0.25")
+
+      tl.to(overlayRef.current, {
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.inOut",
+      }, "-=0.2")
+
+      tl.set(overlayRef.current, {
+        pointerEvents: "none",
+      })
     }
 
     timelineRef.current = tl
+
   }, [open])
 
   return (
@@ -111,7 +157,9 @@ export function MobileNav({
         )}
       >
         <div className="relative w-8 h-8 md:w-10 md:h-10 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
+
           <div className="relative w-8 h-8 md:w-10 md:h-10">
+
             <Menu
               className={cn(
                 "absolute inset-0 w-8 h-8 md:w-10 md:h-10 transition-all duration-300 text-white",
@@ -120,6 +168,7 @@ export function MobileNav({
                   : "opacity-100 rotate-0 scale-100"
               )}
             />
+
             <X
               className={cn(
                 "absolute inset-0 w-8 h-8 md:w-10 md:h-10 transition-all duration-300 text-white",
@@ -128,17 +177,16 @@ export function MobileNav({
                   : "opacity-0 -rotate-90 scale-75"
               )}
             />
+
           </div>
         </div>
       </Button>
 
       {/* OVERLAY */}
       <div
+        ref={overlayRef}
         onClick={() => setOpen(false)}
-        className={cn(
-          "fixed inset-0 z-30 h-screen transition-opacity duration-500",
-          open ? "pointer-events-auto" : "pointer-events-none"
-        )}
+        className="fixed inset-0 z-30 h-screen pointer-events-none"
       >
         {/* SIDEBAR */}
         <div
@@ -149,7 +197,8 @@ export function MobileNav({
             "w-screen max-w-[900px]",
             "flex flex-col justify-center",
             "px-10 py-20",
-            "bg-black/20 backdrop-blur-sm"
+            "bg-black/20 backdrop-blur-sm",
+            "-translate-x-full"
           )}
         >
           <div className="absolute right-0 h-40 w-1 bg-gray-500 rounded-full hidden md:block" />
@@ -190,7 +239,13 @@ interface MobileLinkProps {
   className?: string
 }
 
-function MobileLink({ href, onOpenChange, className, children }: MobileLinkProps) {
+function MobileLink({
+  href,
+  onOpenChange,
+  className,
+  children
+}: MobileLinkProps) {
+
   const router = useRouter()
   const scrollTo = useScrollToSection()
 
@@ -198,11 +253,14 @@ function MobileLink({ href, onOpenChange, className, children }: MobileLinkProps
     e.preventDefault()
 
     const url = new URL(href, window.location.origin)
+
     const hash = url.hash
     const path = url.pathname
 
     if (hash) {
+
       const id = hash.slice(1)
+
       const el = document.getElementById(id)
 
       if (el) {
@@ -211,6 +269,7 @@ function MobileLink({ href, onOpenChange, className, children }: MobileLinkProps
         router.push(`${path}${hash}`)
         setTimeout(() => scrollTo(id, true), 800)
       }
+
     } else {
       router.push(href)
     }
@@ -219,17 +278,15 @@ function MobileLink({ href, onOpenChange, className, children }: MobileLinkProps
   }
 
   return (
-
-    <a href={href}
+    <a
+      href={href}
       onClick={handleClick}
-      className={
-        cn(
-          'nav-item text-right font-medium transition-colors duration-300 hover:text-campana-secondary cursor-pointer',
-          className
-        )
-      }
+      className={cn(
+        'nav-item text-right font-medium transition-colors duration-300 hover:text-campana-secondary cursor-pointer',
+        className
+      )}
     >
       {children}
-    </a >
+    </a>
   )
 }

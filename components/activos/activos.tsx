@@ -39,6 +39,7 @@ export function ActivosSection({
         if (!sectionRef.current) return;
 
         const ctx = gsap.context(() => {
+            const isMobile = window.innerWidth <= 1024;
             gsap.set(contentRef.current, {
                 opacity: 0,
                 scale: 1.08,
@@ -76,8 +77,12 @@ export function ActivosSection({
 
             if (descriptionRef.current) {
                 ScrollTrigger.create({
-                    trigger: descriptionRef.current,
-                    start: "top 8%",
+                    trigger: isMobile
+                        ? sectionRef.current
+                        : descriptionRef.current,
+                    start: isMobile
+                        ? "top top"
+                        : "top 8%",
                     end: () => `+=${window.innerHeight}`,
                     pin: sectionRef.current,
                     pinSpacing: true,
@@ -152,13 +157,13 @@ export function ActivosSection({
         <section
             id={id}
             ref={sectionRef}
-            className="relative w-screen min-h-screen overflow-hidden flex items-center justify-center z-50 bg-transparent md:px-28"
+            className="relative w-screen min-h-screen overflow-visible flex items-center justify-center z-50 bg-transparent md:px-28"
         >
             <div
                 ref={contentRef}
                 className="w-full flex flex-col items-center mb-20 md:mb-28"
             >
-                <div className="w-full max-w-7xl mx-auto px-6 text-center flex flex-col items-center justify-center gap-8 md:gap-12 pb-10 md:pb-30 overflow-hidden">
+                <div className="w-full max-w-7xl mx-auto px-6 text-center flex flex-col items-center justify-center gap-8 md:gap-12 pt-10 md:pt-0 pb-10 md:pb-30 overflow-hidden">
                     {highlight && (
                         <span className="text-campana-secondary text-sm md:text-lg font-sans font-normal tracking-tighter uppercase flex items-center justify-center gap-2 lining-nums">
                             {highlight}

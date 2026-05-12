@@ -4,7 +4,7 @@ import Marquee from "@/components/ui/marquee";
 import { cn } from "@/lib/utils";
 import { motion, useInView } from "motion/react";
 import type { OurValues } from "@/lib/wordpress.d";
-import { useRef, useLayoutEffect } from "react";
+import { useRef, useLayoutEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -63,41 +63,49 @@ export function OurValueSection({
     const containerRef = useRef<HTMLDivElement>(null);
     const isVisible = useInView(sectionRef, { once: true, margin: "-100px" });
     const contentRef = useRef<HTMLDivElement>(null);
+    const [isPinned, setIsPinned] = useState(true);
 
     useLayoutEffect(() => {
         if (!sectionRef.current) return;
 
         const ctx = gsap.context(() => {
+            const isMobileSize = window.innerWidth <= 1024;
 
             gsap.set(contentRef.current, {
                 opacity: 0,
                 scale: 1.1,
-                filter: "blur(10px)"
+                filter: "blur(10px)",
             });
 
-            gsap.to(contentRef.current, {
-                opacity: 1,
-                scale: 1,
-                filter: "blur(0px)",
-                duration: 0.8,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top 20%",
-                    toggleActions: "play none none reverse",
-                }
-            });
-
-            gsap.timeline({
+            const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: () => `+=${window.innerHeight}`,
-                    pin: true,
+                    end: isMobileSize ? "+=150%" : "+=150%",
                     scrub: true,
+                    pin: true,
                     pinSpacing: true,
-                }
+                    anticipatePin: 1,
+                    refreshPriority: 0,
+                    invalidateOnRefresh: true,
+                    onEnter: () => setIsPinned(true),
+                    onLeave: () => setIsPinned(false),
+                    onLeaveBack: () => setIsPinned(true),
+                    onEnterBack: () => setIsPinned(true),
+                },
             });
+
+            // Fade-in del contenido al entrar
+            tl.to(contentRef.current, {
+                opacity: 1,
+                scale: 1,
+                filter: "blur(0px)",
+                duration: 0.5,
+                ease: "power2.out",
+            });
+
+            // Pausa en el estado visible
+            tl.to({}, { duration: isMobileSize ? 0.5 : 1 });
 
         }, sectionRef);
 
@@ -108,11 +116,11 @@ export function OurValueSection({
         <section
             id={id}
             ref={sectionRef}
-            className="relative w-screen h-screen overflow-hidden flex items-center justify-center z-40 bg-transparent"
+            className="relative w-full min-h-screen flex items-center overflow-visible justify-center z-40 bg-transparent"
         >
             <div
                 ref={contentRef}
-                className="w-full h-full flex flex-col justify-center items-center"
+                className="relative w-full min-h-screen flex flex-col justify-center items-center"
             >
                 <div className="w-full max-w-7xl mx-auto px-6 text-center flex flex-col items-center justify-center gap-8 md:gap-12 pb-40 overflow-hidden">
                     {highlight && (

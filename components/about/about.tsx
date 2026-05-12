@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { TextHoverEffect } from "../ui/text-hover-effect";
 import { Volume2, VolumeX } from "lucide-react";
+import { useVideoPreload } from "@/hooks/useVideoPreload";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -32,6 +33,7 @@ export function AboutUsSection({ id, about }: AboutUsProps) {
     const [showControls, setShowControls] = useState(true);
     const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [isMobile, setIsMobile] = useState(false);
+    const [isPinned, setIsPinned] = useState(true);
 
     const introSrc = about.background_desktop;
 
@@ -54,6 +56,14 @@ export function AboutUsSection({ id, about }: AboutUsProps) {
             }, 2500);
         }
     };
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            ScrollTrigger.refresh();
+        }, 300);
+
+        return () => clearTimeout(timeout);
+    }, []);
 
     useEffect(() => {
         if (!isPlaying) {
@@ -81,6 +91,14 @@ export function AboutUsSection({ id, about }: AboutUsProps) {
         ? about.mux_playback_mobile_id || about.mux_playback_id
         : about.mux_playback_id || about.mux_playback_mobile_id;
 
+    const { preloadVideo } = useVideoPreload();
+
+    useEffect(() => {
+        if (!selectedPlaybackId) return;
+
+        preloadVideo(selectedPlaybackId);
+    }, [selectedPlaybackId]);
+
     useLayoutEffect(() => {
         if (!sectionRef.current) return;
 
@@ -105,19 +123,24 @@ export function AboutUsSection({ id, about }: AboutUsProps) {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    // En mobile podemos hacer el scroll un poco más corto (300%) si prefieres
-                    end: isMobileSize ? "+=200%" : "+=400%",
+                    end: isMobileSize ? "+=100%" : "+=300%",
                     scrub: true,
                     pin: true,
                     pinSpacing: true,
                     anticipatePin: 1,
+                    refreshPriority: 0,
                     onLeave: () => {
                         videoRef.current?.pause();
                         setIsPlaying(false);
+                        setIsPinned(false);
                     },
                     onLeaveBack: () => {
                         videoRef.current?.pause();
                         setIsPlaying(false);
+                        setIsPinned(true);
+                    },
+                    onEnterBack: () => {
+                        setIsPinned(true);
                     }
                 },
             });
@@ -173,7 +196,7 @@ export function AboutUsSection({ id, about }: AboutUsProps) {
         <section
             id={id}
             ref={sectionRef}
-            className="relative w-full h-screen flex items-center overflow-hidden z-50 bg-campana-bg-about"
+            className={`relative w-full min-h-screen flex items-center overflow-hidden bg-campana-bg-about z-50`}
         >
             {/* BACKGROUND OVERLAY - Nivel base */}
             <div
@@ -221,7 +244,7 @@ export function AboutUsSection({ id, about }: AboutUsProps) {
                             ref={videoContainerRef}
                             onMouseMove={handleMouseMove}
                             onMouseLeave={() => isPlaying && setShowControls(false)}
-                            className="relative w-full aspect-2430/1080 shadow-2xl overflow-hidden group pointer-events-auto"
+                            className="relative h-full md:w-full aspect-none md:aspect-2430/1080 shadow-2xl overflow-hidden group pointer-events-auto"
                         >
                             <video
                                 ref={videoRef}

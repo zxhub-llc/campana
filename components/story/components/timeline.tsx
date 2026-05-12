@@ -129,7 +129,7 @@ export const Timeline = ({
 
                     tl.to(contentRevealRef.current, {
                         y: () => (window.innerWidth >= 1024 ? "-65%" : "-95%"),
-                        duration: 2,
+                        duration: 1.4,
                         ease: "power2.inOut",
                     });
 
@@ -142,7 +142,7 @@ export const Timeline = ({
                             ease: "power2.out",
                             pointerEvents: "auto",
                         },
-                        "<"
+                        isDesktop ? "<" : ">+=0.05"
                     );
 
                     tl.to({}, { duration: 1.5 });

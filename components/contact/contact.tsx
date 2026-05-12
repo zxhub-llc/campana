@@ -118,12 +118,12 @@ const ContactPageSection = ({ id, title, subtitle, phone, mail, instagram, faceb
                             </span>
                         </motion.div>
 
-                        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-start gap-3 md:gap-6 pt-4">
+                        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row flex-wrap items-start lg:justify-start gap-3 md:gap-6 pt-4 px-13.5 md:px-0">
                             <a
                                 href={`mailto:${mail}`}
                                 className="group/contact flex items-center justify-center lg:justify-start gap-3"
                             >
-                                <div className="w-10 h-10 rounded-full bg-[#001D3D] flex items-center justify-center transition-colors group-hover/contact:bg-white group-hover/contact:border-[#001D3D] group-hover/contact:border">
+                                <div className="w-12 h-12 rounded-full bg-[#001D3D] flex items-center justify-center transition-colors group-hover/contact:bg-white group-hover/contact:border-[#001D3D] group-hover/contact:border">
                                     <Mail className="w-5 h-5 text-white transition-colors group-hover/contact:text-[#001D3D]" />
                                 </div>
                                 <span className="text-[#001D3D] transition-colors group-hover/contact:text-[#001D3D] font-sans font-normal text-sm tracking-wide">
@@ -135,7 +135,7 @@ const ContactPageSection = ({ id, title, subtitle, phone, mail, instagram, faceb
                                 href={`tel:${phone}`}
                                 className="group/contact flex items-center justify-center lg:justify-start gap-3"
                             >
-                                <div className="w-10 h-10 rounded-full bg-[#001D3D] flex items-center justify-center transition-colors group-hover/contact:bg-white group-hover/contact:border-[#001D3D] group-hover/contact:border">
+                                <div className="w-12 h-12 rounded-full bg-[#001D3D] flex items-center justify-center transition-colors group-hover/contact:bg-white group-hover/contact:border-[#001D3D] group-hover/contact:border">
                                     <Phone className="w-5 h-5 text-white transition-colors group-hover/contact:text-[#001D3D]" />
                                 </div>
                                 <span className="text-[#001D3D] transition-colors group-hover/contact:text-[#001D3D] font-sans font-normal text-sm tracking-wide">

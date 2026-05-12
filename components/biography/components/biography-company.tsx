@@ -177,7 +177,7 @@ export default function BiographyCompany({ id, highlight, short_description, des
             <section
                 id={id}
                 ref={sectionRef}
-                className="relative w-full h-screen flex items-center z-40 overflow-hidden bg-black"
+                className="relative w-full min-h-screen flex items-center z-40 overflow-hidden bg-black"
             >
                 <Image
                     ref={bgLayerRef}
@@ -261,7 +261,7 @@ export default function BiographyCompany({ id, highlight, short_description, des
                         </div>
 
                         <div className="lg:col-span-7 flex flex-col items-start lg:items-start justify-center relative w-full h-full lg:h-auto">
-                            <div className="absolute inset-0 w-full h-full flex justify-start lg:justify-start items-center mt-10 lg:mt-0 pointer-events-none z-40">
+                            <div className="absolute inset-0 w-full h-full flex justify-start lg:justify-start items-center mt-0 lg:mt-0 pointer-events-none z-40">
                                 <div
                                     ref={textRef}
                                     className="flex flex-col text-white px-8 md:px-0 py-10 md:max-w-4xl relative pointer-events-auto left-0 md:-left-10"
