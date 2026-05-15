@@ -123,7 +123,7 @@ export function AboutUsSection({ id, about }: AboutUsProps) {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: isMobileSize ? "+=100%" : "+=300%",
+                    end: isMobileSize ? "+=300%" : "+=300%",
                     scrub: true,
                     pin: true,
                     pinSpacing: true,

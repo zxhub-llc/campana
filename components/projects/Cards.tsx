@@ -212,10 +212,57 @@ const Content = ({
 
   const formatText = (text: string) => {
     if (!text) return null;
+
+    // CASO 1: SOLO si el HTML explícitamente trae la orden de ser un Grid/2 Columnas
+    if (text.includes("grid-template-columns") || text.includes("display: grid")) {
+      let processedHtml = text
+        // Limpiamos y homogeneizamos cualquier etiqueta <ul> que traiga estilos de grid para estandardizarla con los tuyos
+        .replace(
+          /<ul[^>]*>/g,
+          '<ul style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px 16px; list-style-type: none; padding-left: 4px; width: 100%;">'
+        )
+        // Reemplazamos los <li> para meter tu viñeta dorada personalizada
+        .replace(
+          /<li>/g,
+          '<li class="text-neutral-600 text-sm leading-snug flex items-start gap-1"><span class="text-[#b5934a] shrink-0 text-sm">•</span><span>'
+        )
+        .replace(
+          /<\/li>/g,
+          '</span></li>'
+        );
+
+      return <div dangerouslySetInnerHTML={{ __html: processedHtml }} />;
+    }
+
+    // CASO 2: Si viene un HTML con un <ul> común y silvestre (sin Grid)
+    // Lo renderizamos directamente respetando las etiquetas nativas de WordPress
+    if (text.includes("<ul") || text.includes("<li")) {
+      return <div dangerouslySetInnerHTML={{ __html: text }} />;
+    }
+
+    // CASO 3: Tu formateador original para texto plano por líneas o guiones (-)
     const lines = text.split(/\r?\n/);
-    return lines.map((line, index) => {
+    const renderedElements: React.ReactNode[] = [];
+    let currentBulletGroup: React.ReactNode[] = [];
+
+    const pushCurrentBulletGroup = (keyIndex: number) => {
+      if (currentBulletGroup.length > 0) {
+        renderedElements.push(
+          <div key={`grid-group-${keyIndex}`} className="grid grid-cols-2 gap-x-4 gap-y-1 ml-2 my-2 w-full">
+            {currentBulletGroup}
+          </div>
+        );
+        currentBulletGroup = [];
+      }
+    };
+
+    lines.forEach((line, idx) => {
       const trimmedLine = line.trim();
-      if (!trimmedLine) return <div key={index} className="h-4" />;
+      if (!trimmedLine) {
+        pushCurrentBulletGroup(idx);
+        renderedElements.push(<div key={idx} className="h-4" />);
+        return;
+      }
 
       if (trimmedLine.startsWith("-")) {
         const bulletContent = trimmedLine.substring(1).trim();
@@ -223,37 +270,38 @@ const Content = ({
           /\*\*(.*?)\*\*/g,
           '<strong class="text-[#001D3D] font-bold">$1</strong>'
         );
-        return (
-          <div key={index} className="flex items-start ml-2 gap-0">
-            <span className="text-[#b5934a] shrink-0 text-sm">•</span>
-            <span
-              className="text-neutral-600 text-sm leading-snug"
-              dangerouslySetInnerHTML={{ __html: formatted }}
-            />
+        currentBulletGroup.push(
+          <div key={`bullet-${idx}`} className="flex items-start gap-1">
+            <span className="text-[#b5934a] shrink-0 text-sm leading-snug">•</span>
+            <span className="text-neutral-600 text-sm leading-snug" dangerouslySetInnerHTML={{ __html: formatted }} />
           </div>
         );
+        return;
       }
 
-      const isHeader =
-        trimmedLine.startsWith("**") && trimmedLine.endsWith("**");
-      const formattedLine = trimmedLine.replace(
-        /\*\*(.*?)\*\*/g,
-        (match, p1) => {
-          if (isHeader) {
-            return `<strong class="text-[#001D3D] font-extrabold block text-lg leading-5 tracking-tight">${p1}</strong>`;
-          }
-          return `<strong class="text-[#001D3D] font-bold">${p1}</strong>`;
-        }
-      );
+      pushCurrentBulletGroup(idx);
 
-      return (
+      const isHeader = trimmedLine.startsWith("**") && trimmedLine.endsWith("**");
+      const formattedLine = trimmedLine.replace(/\*\*(.*?)\*\*/g, (match, p1) => {
+        return isHeader
+          ? `<strong class="text-[#001D3D] font-extrabold block text-lg leading-5 tracking-tight">${p1}</strong>`
+          : `<strong class="text-[#001D3D] font-bold">${p1}</strong>`;
+      });
+
+      renderedElements.push(
         <p
-          key={index}
+          key={idx}
           className={`text-neutral-600 text-sm ${isHeader ? "mb-0" : "text-justify"}`}
           dangerouslySetInnerHTML={{ __html: formattedLine }}
         />
       );
     });
+
+    if (currentBulletGroup.length > 0) {
+      pushCurrentBulletGroup(lines.length);
+    }
+
+    return renderedElements;
   };
 
   return (
@@ -263,37 +311,48 @@ const Content = ({
         className={cn(
           "w-full md:max-w-[500px]",
           "flex flex-col h-full",
-          "p-6 md:p-10 bg-[#f5f5f7]",
+          "px-4 md:px-0 md:p-10 bg-[#f5f5f7]",
           "overflow-y-auto custom-scrollbar"
         )}
       >
         {/* Contenido — crece y centra verticalmente */}
-        <div className="flex-1 flex flex-col justify-center gap-2 min-h-0">
+        <div className="flex-1 flex flex-col justify-center gap-1 min-h-0">
           <motion.span
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="text-[#f1ba0a] font-sans font-normal tracking-tighter text-xl pt-4 md:pt-0"
+            className="text-[#f1ba0a] font-sans font-semibold tracking-tighter text-lg -pt-0 md:pt-0"
           >
             {category}
           </motion.span>
           <motion.span
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="text-[#001D3D] font-sans font-normal tracking-tighter text-lg mb-2 md:mb-4"
+            className="text-[#001D3D] font-sans font-medium tracking-tighter text-lg mb-2 md:mb-4 -mt-2 md:mt-0"
           >
             {title}
           </motion.span>
 
-          <div className="text-[#001D3D] text-base font-sans font-normal leading-relaxed flex flex-col gap-2 text-justify">
+          {/* DIV CORREGIDO CON ESTILOS INLINE PARA ASEGURAR COMPATIBILIDAD CON EL NORMALIZADOR */}
+          <div
+            className="text-[#001D3D] text-base font-sans font-normal flex flex-col gap-1 text-justify 
+                       max-h-[400px] md:max-h-[500px] overflow-y-auto scrollbar-thin data-scroll"
+            style={{
+              touchAction: 'pan-y',
+              WebkitOverflowScrolling: 'touch',
+              overscrollBehavior: 'contain'
+            }}
+          >
             <span className="block leading-snug text-sm text-neutral-600">
               {description}
             </span>
-            <div className="text-neutral-600">{formatText(details)}</div>
+            <div className="text-neutral-600 leading-snug text-sm">
+              {formatText(details)}
+            </div>
           </div>
         </div>
 
         {/* Botón — siempre anclado al fondo */}
-        <div className="shrink-0 pt-8 pb-6 md:pb-0">
+        <div className="shrink-0 pt-0 md:pt-8 pb-4 md:pb-0">
           <Button
             asChild
             className="px-6 py-6 border-[#b5934a]/30 hover:bg-[#f1ba0a] transition-all group rounded-full bg-[#001D3D] w-full md:w-fit"

@@ -423,7 +423,7 @@ export const Card = ({
         createPortal(
           <AnimatePresence>
             {open && (
-              <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-6">
+              <div className="fixed inset-0 z-[9999] flex items-center justify-center p-2 md:p-6">
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -434,7 +434,7 @@ export const Card = ({
                 <motion.div
                   ref={containerRef}
                   layoutId={layout ? `card-${card.title}` : undefined}
-                  className="relative z-[60] w-full max-w-7xl rounded-[32px] bg-[#030b14] overflow-hidden h-[90vh] md:h-[80vh]"
+                  className="relative z-[60] w-full max-w-7xl rounded-xl md:rounded-[32px] bg-[#030b14] overflow-hidden h-[98vh] md:h-[80vh]"
                 >
                   <button
                     className="absolute top-6 right-6 h-10 w-10 flex items-center justify-center rounded-full bg-[#001D3D] text-[#f1ba0a] z-[70]"

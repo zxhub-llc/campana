@@ -56,7 +56,7 @@ export default async function RootLayout({
         <meta name="google" content="notranslate" />
         <meta name="microsoft" content="notranslate" />
       </head>
-      <body className={cn("min-h-screen bg-campana-bg text-foreground antialiased")}>
+      <body className={cn("min-h-screen bg-black text-foreground antialiased")}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

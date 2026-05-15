@@ -81,7 +81,7 @@ export function OurValueSection({
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: isMobileSize ? "+=150%" : "+=150%",
+                    end: isMobileSize ? "+=450%" : "+=150%",
                     scrub: true,
                     pin: true,
                     pinSpacing: true,

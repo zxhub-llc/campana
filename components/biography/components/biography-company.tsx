@@ -68,7 +68,7 @@ export default function BiographyCompany({ id, highlight, short_description, des
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=300%",
+                    end: isMobile ? "+=500%" : "+=300%",
                     scrub: 1.2,
                     pin: true,
                     anticipatePin: 1,
@@ -108,7 +108,7 @@ export default function BiographyCompany({ id, highlight, short_description, des
                 }, 1)
             }
 
-            tl.to({}, { duration: 1.5 }) // Pausa de lectura
+            tl.to({}, { duration: isMobile ? 4 : 2 }) // Pausa de lectura
                 .to(extraRef.current, {
                     opacity: 0,
                     scale: 0.85,
@@ -117,7 +117,7 @@ export default function BiographyCompany({ id, highlight, short_description, des
                     duration: 1,
                     ease: "power2.out"
                 })
-                .add("block1Reveal")
+                .add("block1Reveal", "+=0.5")
                 .to(bgImageRef.current, {
                     scale: 1,
                     opacity: isMobile ? 0 : 1,
@@ -138,7 +138,7 @@ export default function BiographyCompany({ id, highlight, short_description, des
                     ease: "power2.inOut"
                 }, "block1Reveal")
 
-                .to({}, { duration: 1.5 })
+                .to({}, { duration: isMobile ? 3 : 2 })
 
                 .add("textExit")
                 .to(textRef.current, {

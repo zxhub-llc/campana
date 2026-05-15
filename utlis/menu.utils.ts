@@ -34,7 +34,6 @@ export function mapWpMenu(
 
   items.forEach((item, idx) => {
     if (!item) {
-      console.warn(`[MENU] Item en índice ${idx} es undefined o null`)
       return
     }
 
