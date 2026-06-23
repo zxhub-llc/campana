@@ -20,12 +20,20 @@ export async function generateMetadata(): Promise<Metadata> {
   const siteInfo = await getSiteInfo();
 
   return {
-    title: siteInfo?.title || "Título por defecto",
-    description: siteInfo?.description || "Descripción por defecto",
+    title: siteInfo?.title || "CAMPANA",
+    description: siteInfo?.description || "CAMPANA",
     metadataBase: new URL(siteConfig.site_domain || 'http://localhost:3000'),
     openGraph: {
       images: siteInfo?.logo?.url ? [siteInfo.logo.url] : [],
     },
+    authors: [
+      {
+        name: "Stuvvion",
+        url: "https://stuvvion.com"
+      }
+    ],
+    creator: "Stuvvion",
+    publisher: "Stuvvion",
   };
 }
 
@@ -55,6 +63,7 @@ export default async function RootLayout({
       <head>
         <meta name="google" content="notranslate" />
         <meta name="microsoft" content="notranslate" />
+        {/* Developed by Stuvvion — Tech Partner & Build Studio */}
       </head>
       <body className={cn("min-h-screen bg-black text-foreground antialiased")}>
         <ThemeProvider
