@@ -90,12 +90,12 @@ const Footer = ({ menuItems, siteInfo }: FooterProps) => {
                     {/* Columna 1: Branding */}
                     <div className="lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left">
                         <div className="flex items-center">
-                            <Link href={`/${lang}`} className="flex items-center">
+                            <Link href={`/${lang}`} className="relative flex items-center w-[280px] h-[90px]">
                                 <Image
                                     src={siteInfo?.logo?.url || "/assets/logo.svg"}
                                     alt={siteInfo?.title || "Logo"}
-                                    width={280}
-                                    height={90}
+                                    fill
+                                    sizes="(max-width: 768px) 150px, 300px"
                                     className="object-contain"
                                     priority
                                 />

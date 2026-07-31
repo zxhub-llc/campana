@@ -1,236 +1,211 @@
-# ZXGROUP — Software Development, Cloud & Technology Services Company
+# Grupo Campana — Sitio Web Oficial 🏢
 
-ZXGROUP is a comprehensive technology solutions company specializing in software development, cloud services, and IT infrastructure. We help organizations design, build, deploy, and operate secure, scalable, and high-performance digital ecosystems. Our expertise spans the entire technology stack, from product strategy and software engineering to cloud architecture, infrastructure management, and long-term operational support.
+<!-- Sitio Web y Desarrollador -->
+[![Sitio Web Oficial](https://img.shields.io/badge/Sitio_Web-grupocampana.ec-2563EB?style=flat&logo=googlechrome&logoColor=white)](https://grupocampana.ec/)
+[![Desarrollado por Stuvvion](https://img.shields.io/badge/Desarrollado_por-Stuvvion-111827?style=flat&logo=rocket&logoColor=white)](https://www.stuvvion.com/)
 
----
-## About ZXGROUP
+<!-- Stack Tecnológico Principales -->
+[![Next.js](https://img.shields.io/badge/Next.js-v16.2.0-000000?style=flat&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-v19.2.4-149ECA?style=flat&logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-v5.9.3-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
-ZXGROUP was established to provide end-to-end technology services for companies that require more than just software development. We operate as a strategic technology partner, supporting our clients throughout the full lifecycle of their digital initiatives.
+<!-- Herramientas y CMS -->
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4.2-0EA5E9?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![WordPress](https://img.shields.io/badge/WordPress-Headless_CMS-21759B?style=flat&logo=wordpress&logoColor=white)](https://cms.grupocampana.ec/)
 
-Our work combines strong engineering principles, modern cloud-native architectures, and an infrastructure-aware mindset. We focus on building systems that are reliable, maintainable, and capable of evolving with business and market demands.
+Plataforma web corporativa de **Grupo Campana**, diseñada y desarrollada por **[Stuvvion](https://www.stuvvion.com)** utilizando una arquitectura **Headless CMS** moderna que combina la potencia de **Next.js 16 (App Router)** en el frontend y **WordPress** con **Advanced Custom Fields (ACF)** en el backend.
 
----
-
-## Our Mission
-
-To empower businesses through robust, secure, and scalable technology solutions by delivering high-quality software, resilient infrastructure, and expertly managed cloud environments.
-
----
-
-## Our Vision
-
-To be a trusted global technology partner recognized for technical excellence, architectural rigor, and the ability to transform complex business challenges into efficient digital solutions.
+El sitio ofrece una experiencia inmersiva, elegante y fluida para presentar los proyectos inmobiliarios, activos estratégicos, biografía corporativa, valores e historia de la compañía en Ecuador e internacionalmente.
 
 ---
 
-## Core Services
+## 🌐 Enlaces Rápidos
 
-### Custom Software Development
-We design and develop fully customized software solutions aligned with specific business requirements and operational constraints.
-
-- Enterprise applications
-- SaaS and B2B platforms
-- ERP and CRM systems
-- Workflow automation tools
-- System modernization and legacy migrations
+- **Sitio Web en Producción**: [https://grupocampana.ec](https://grupocampana.ec)
+- **CMS Backend**: [https://cms.grupocampana.ec](https://cms.grupocampana.ec)
+- **Desarrollado por**: [Stuvvion](https://stuvvion.com)
 
 ---
 
-### Web & Application Development
-We create modern, performant, and secure applications using industry-leading frameworks and best practices.
+## ✨ Características Principales
 
-- Frontend development (React, Next.js, Vue)
-- Backend services and APIs (Laravel, Spring Boot, Node.js)
-- Headless CMS and content platforms
-- Progressive Web Applications (PWA)
-- Accessibility-first and responsive design
-
----
-
-### SaaS, B2B & Multi-Tenant Platforms
-ZXGROUP specializes in architecting and building scalable SaaS platforms with enterprise-grade features.
-
-- Multi-tenant architectures
-- Subscription and billing systems
-- Role-based access control (RBAC)
-- Usage-based and tiered pricing models
-- Payment gateway integrations
+- **Arquitectura Headless CMS**: Separación limpia entre la capa de gestión de contenidos (WordPress) y la capa de presentación de alto rendimiento (Next.js App Router).
+- **Multilingüe Nativo (i18n)**: Soporte completo para español (`/es`) e inglés (`/en`) mediante rutas dinámicas `[lang]`.
+- **Renderizado Dinámico de Secciones (`BlocksRenderer`)**: Mapeo automático de layouts de ACF Flexible Content a componentes modulares de React.
+- **Experiencia Visual Inmersiva & Animaciones**: Integración con **GSAP 3**, **Framer Motion** y **Three.js** (`@react-three/fiber`) para transiciones suaves, scroll interactivo y efectos tridimensionales.
+- **Optimización Multimedia de Alto Nivel**: Integración con **Mux Player**, **Vimeo** y reproductores de video optimizados para dispositivos móviles y de escritorio.
+- **Formulario de Contacto Interactivo**: Validación estricta en frontend con **React Hook Form** + **Zod** y envío dinámico de correos a través de **Resend**.
+- **Generación Dinámica de OpenGraph (`next/og`)**: Tarjetas de vista previa para redes sociales (OpenGraph & Twitter cards) de 1200x630 px autogeneradas por código en tiempo real con datos de WordPress ACF sin necesidad de subir imágenes estáticas.
+- **Máximo Rendimiento Web (CWV)**: Formatos de imagen de última generación (AVIF/WebP), `minimumCacheTTL`, custom image loader y compilación en modo `standalone`.
 
 ---
 
-### Cloud Services & Cloud Architecture
-We design, implement, and manage cloud infrastructures optimized for scalability, security, and cost efficiency.
+## 🛠️ Stack Tecnológico
 
-- Cloud-native architecture design
-- Public, private, and hybrid cloud solutions
-- Infrastructure as Code (IaC)
-- Cloud cost optimization and governance
-- High availability and disaster recovery strategies
+### Frontend & Core
+- **Framework**: [Next.js 16.2](https://nextjs.org/) (App Router + Turbopack)
+- **Librería de UI**: [React 19.2](https://react.dev/)
+- **Lenguaje**: [TypeScript 5.9](https://www.typescriptlang.org/)
+- **Estilos**: [Tailwind CSS v4](https://tailwindcss.com/), PostCSS, Styled Components
 
----
+### CMS & Datos
+- **Backend Headless**: WordPress REST API / ACF (Advanced Custom Fields)
+- **Revalidación**: Incremental Static Regeneration (ISR) / Webhooks de WordPress
 
-### Infrastructure & DevOps
-We manage and automate infrastructure to ensure reliability, performance, and operational efficiency.
+### UI, Componentes & Animaciones
+- **Componentes UI**: Radix UI (Accordion, Dialog, Dropdown Menu, Navigation Menu, Scroll Area, Select)
+- **Iconos**: Lucide React
+- **Animaciones & Motion**: GSAP 3.14, Motion (Framer Motion), Swiper 12
+- **Gráficos 3D**: Three.js, `@react-three/fiber`
 
-- CI/CD pipeline design and automation
-- Containerization with Docker
-- Orchestration and deployment strategies
-- Monitoring, logging, and alerting
-- Performance tuning and capacity planning
-
----
-
-### API Development & System Integrations
-We connect complex systems through reliable and well-documented integration layers.
-
-- RESTful and GraphQL APIs
-- Third-party and enterprise integrations
-- Payment, logistics, and identity services
-- Government and regulatory system integrations
-- Data synchronization and middleware solutions
+### Formulario & Integraciones
+- **Formularios**: React Hook Form, `@hookform/resolvers`, Zod
+- **Emailing**: Resend API
+- **Video Players**: `@mux/mux-player-react`, `@vimeo/player`, `react-player`
+- **Analytics**: `@vercel/analytics`
 
 ---
 
-### ERP & Business Systems
-We develop modular business platforms tailored to operational and regulatory requirements.
+## 📂 Estructura del Proyecto
 
-- Inventory and supply chain systems
-- Billing and invoicing platforms
-- Electronic invoicing and tax compliance
-- Financial reporting and analytics
-- Custom dashboards and BI integrations
-
----
-
-### Data, Analytics & Reporting
-We help organizations extract value from their data through structured analytics solutions.
-
-- Data modeling and optimization
-- Reporting platforms and dashboards
-- Business intelligence integrations
-- Performance and operational metrics
-- Data integrity and validation processes
-
----
-
-### Security & Compliance
-Security is integrated into every layer of our solutions.
-
-- Secure application design
-- Authentication and authorization systems
-- Data protection and encryption
-- Compliance-driven architectures
-- Security audits and best-practice reviews
-
----
-
-## Technologies We Work With
-
-### Frontend
-- React
-- Next.js
-- Vue 3
-- TypeScript
-- Tailwind CSS
-- Component-driven UI systems
-
-### Backend
-- Laravel
-- Spring Boot
-- Node.js
-- Kotlin
-- REST and GraphQL APIs
-
-### Cloud & Infrastructure
-- AWS
-- Vercel
-- Railway
-- Docker
-- CI/CD pipelines
-- Infrastructure as Code
-
-### Databases & Storage
-- PostgreSQL
-- MySQL
-- Redis
-- Cloud-based storage solutions
-
-### Mobile & Multiplatform
-- Kotlin Multiplatform (KMP)
-- Progressive Web Apps (PWA)
+```text
+grupocampana/
+├── app/                      # Rutas principales (Next.js App Router)
+│   ├── [lang]/               # Enrutamiento i18n (/es, /en)
+│   │   ├── [slug]/           # Páginas dinámicas desde WordPress
+│   │   ├── posts/            # Sección de blog, noticias y artículos
+│   │   ├── layout.tsx        # Layout global con proveedores y navegación
+│   │   └── page.tsx          # Página de inicio dinámicamente renderizada
+│   ├── api/                  # Endpoints de API locales (ej. webhook revalidación)
+│   ├── globals.css           # Estilos globales y tokens de Tailwind CSS v4
+│   └── sitemap.ts            # Generación dinámica del sitemap SEO
+├── components/               # Componentes modulares de React
+│   ├── about/                # Sección Sobre Nosotros
+│   ├── activos/              # Activos Estratégicos del Grupo
+│   ├── biography/            # Biografía corporativa y directiva
+│   ├── contact/              # Formulario de contacto integrado con Resend
+│   ├── faqs/                 # Preguntas frecuentes en acordeón
+│   ├── hero/                 # Hero slider interactivo con video/imágenes
+│   ├── investment/           # Sección de oportunidades de inversión
+│   ├── nav/                  # Menú de navegación principal y footer
+│   ├── our-values/           # Valores corporativos
+│   ├── projects/             # Portafolio y desarrollos inmobiliarios
+│   ├── story/                # Línea de tiempo e historia de la empresa
+│   ├── ui/                   # Componentes base reutilizables (Radix UI)
+│   └── craft.tsx             # Layout wrappers y contenedores estructurales
+├── lib/                      # Configuración y utilidades de backend/CMS
+│   ├── wordpress.ts          # Funciones de consulta a la API de WordPress
+│   ├── wordpress.d.ts        # Definición de tipos TypeScript para ACF / WP API
+│   ├── image-loader.ts       # Cargador personalizado de imágenes
+│   └── utils.ts              # Utilidades auxiliares (clsx, tailwind-merge)
+├── menu.config.ts            # Configuración de URLs y slugs base del CMS
+├── next.config.ts            # Configuración de Next.js (patrones de imágenes, standalone, etc.)
+├── site.config.ts            # Metadatos base del sitio
+└── public/                   # Recursos estáticos (Logos, imágenes, favicons)
+```
 
 ---
 
-## Our Engineering Principles
+## ⚙️ Configuración del Entorno (`.env`)
 
-- **Architecture-First Approach**: Strong foundations for long-term scalability.
-- **Cloud-Native Mindset**: Designed for elasticity and resilience.
-- **Security by Default**: Embedded security practices.
-- **Automation Everywhere**: Reduced operational overhead through automation.
-- **Documentation & Standards**: Clear, maintainable, and auditable systems.
+Crea un archivo `.env.local` o `.env` en la raíz del proyecto basándote en `.env.example`:
 
----
+```env
+# URL de la instancia de WordPress Headless
+WORDPRESS_URL="https://cms.grupocampana.ec"
+WORDPRESS_HOSTNAME="cms.grupocampana.ec"
 
-## Industries We Serve
+# Clave secreta para la revalidación por webhook desde WordPress
+WORDPRESS_WEBHOOK_SECRET="tu-clave-secreta-webhook"
 
-- Technology & SaaS
-- Finance & Fintech
-- Logistics & Transportation
-- E-commerce & Retail
-- Education & Training
-- Professional Services
-- Enterprise & Corporate Operations
+# Clave de API para el servicio de envío de correo (Contacto)
+RESEND_API_KEY="re_123456789..."
+```
 
 ---
 
-## Our Process
+## 🚀 Instalación y Desarrollo Local
 
-1. **Discovery & Assessment**  
-   Business analysis, technical evaluation, and requirement definition.
+### Requisitos Previos
 
-2. **Architecture & Planning**  
-   System design, infrastructure planning, and roadmap definition.
+- **Node.js**: v18.17.0 o superior (recomendado v20+)
+- **npm** / **yarn** / **pnpm**
 
-3. **Implementation**  
-   Agile development with continuous integration and testing.
+### Pasos de Ejecución
 
-4. **Deployment & Operations**  
-   Cloud deployment, monitoring, and operational support.
+1. **Clonar el repositorio:**
+   ```bash
+   git clone https://github.com/zxstudio-llc/campana.git
+   cd grupocampana
+   ```
 
-5. **Maintenance & Evolution**  
-   Continuous improvement, scaling, and optimization.
+2. **Instalar dependencias:**
+   ```bash
+   npm install
+   ```
 
----
+3. **Configurar el archivo de entorno:**
+   ```bash
+   cp .env.example .env.local
+   # Edita .env.local con las variables correspondientes
+   ```
 
-## Engagement Models
+4. **Iniciar el servidor de desarrollo:**
+   ```bash
+   npm run dev
+   ```
 
-- Fixed-scope project delivery
-- Dedicated development and infrastructure teams
-- Long-term technology partnerships
-- Consulting, audits, and architecture reviews
-
----
-
-## Why ZXGROUP
-
-- Full-stack technology expertise
-- Strong focus on cloud and infrastructure
-- Proven experience with complex, mission-critical systems
-- Clear communication and structured execution
-- Long-term, scalable solutions
+   El sitio estará disponible en [http://localhost:3000](http://localhost:3000).
 
 ---
 
-## Partnerships & Collaboration
+## 📜 Scripts Disponibles
 
-ZXGROUP collaborates with startups, growing companies, and enterprises seeking a reliable and technically rigorous partner. We engage in both project-based and long-term strategic collaborations.
+En el archivo `package.json` se definen los siguientes comandos:
+
+- **`npm run dev`**: Inicia el servidor de desarrollo con Next.js Turbopack.
+- **`npm run build`**: Compila la aplicación optimizada para producción en modo `standalone`.
+- **`npm run start`**: Inicia el servidor de producción compilado.
+- **`npm run lint`**: Ejecuta ESLint para verificar estándares de código.
 
 ---
 
-## Legal & Compliance
+## 🧱 Arquitectura de Secciones (`BlocksRenderer`)
 
-All services are delivered following industry standards, contractual confidentiality agreements, and applicable data protection regulations. Intellectual property and ownership terms are clearly defined per engagement.
+El sistema utiliza un renderizador dinámico de bloques en `app/[lang]/page.tsx` que consulta las secciones configuradas en WordPress mediante ACF Flexible Content (`page_sections`):
+
+| Diseño ACF (`acf_fc_layout`) | Componente React | Descripción |
+| :--- | :--- | :--- |
+| `hero` | `<Hero />` | Cabecera principal con slider de imágenes o video. |
+| `about` | `<AboutUsSection />` | Información institucional de la empresa. |
+| `biography` | `<BiographyCompanySection />` | Biografía ejecutiva y trayectoria empresarial. |
+| `activos` | `<ActivosSection />` | Portafolio de activos y unidades estratégicas. |
+| `our_values` | `<OurValueSection />` | Pilares y valores fundamentales. |
+| `projects` | `<ProjectsCardsSection />` | Muestra de proyectos desarrollados. |
+| `timelines` | `<StoryTimelineSection />` | Hitos clave de la trayectoria del grupo. |
+| `investment` | `<InvestmentSection />` | Propuesta de valor e inversiones con llamado a la acción. |
+| `faqs` | `<FAQSection />` | Sección interactiva de preguntas y respuestas. |
+| `contact` | `<ContactPageSection />` | Formulario de contacto institucional. |
 
 ---
 
-© ZXGROUP. All rights reserved.
+## 🚢 Despliegue
+
+La aplicación está configurada con `output: "standalone"` en `next.config.ts`, lo que optimiza significativamente la imagen resultante para despliegues en contenedores Docker, **Railway**, **Vercel** o servidores de infraestructura propia.
+
+### Despliegue en Railway
+El repositorio incluye archivos de configuración preparados (`railway.toml` / `railway.json`):
+- **Build Command**: `npm run build`
+- **Start Command**: `npm run start`
+
+## 💻 Desarrollado por
+
+Este proyecto fue diseñado y desarrollado por **[Stuvvion](https://www.stuvvion.com/)** — Estudio y agencia de desarrollo de software, productos digitales y soluciones tecnológicas de alto rendimiento.
+
+---
+
+## 📄 Licencia
+
+Este proyecto es de propiedad privada de **Grupo Campana**. Todos los derechos reservados.
+
+© 2026 Grupo Campana. [https://grupocampana.ec](https://grupocampana.ec) - Desarrollado por [Stuvvion](https://www.stuvvion.com).
