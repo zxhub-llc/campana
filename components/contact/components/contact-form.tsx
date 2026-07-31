@@ -54,6 +54,7 @@ export const ContactForm = ({ lang = "es" }: { lang?: "es" | "en" }) => {
             company: formData.get("company"),
             phone: formData.get("phone"),
             message: formData.get("message"),
+            lang,
         };
 
         try {
