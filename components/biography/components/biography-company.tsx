@@ -342,9 +342,9 @@ export default function BiographyCompany({ id, highlight, short_description, des
                                                                 {data.cta}
                                                             </span>
 
-                                                            <div className=" flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-full bg-campana-primary text-white">
+                                                            {/* <div className=" flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-full bg-campana-primary text-white">
                                                                 <Play size={16} fill="currentColor" />
-                                                            </div>
+                                                            </div> */}
 
                                                         </div>
 
