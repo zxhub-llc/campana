@@ -329,33 +329,19 @@ export default function BiographyCompany({ id, highlight, short_description, des
 
                                         {data.cta && data.mux_playback_id && (
                                             <Modal>
-
                                                 <ModalTrigger asChild>
-
                                                     <Button
                                                         type="button"
                                                         className=" px-5 md:px-6 py-5 md:py-6 hover:bg-campana-secondary group rounded-full bg-white w-auto transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-4 cursor-pointer text-campana-primary hover:text-white relative z-50">
-
                                                         <div className="flex items-center gap-3 md:gap-4">
-
                                                             <span className="font-semibold text-sm md:text-base">
                                                                 {data.cta}
                                                             </span>
-
-                                                            {/* <div className=" flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-full bg-campana-primary text-white">
-                                                                <Play size={16} fill="currentColor" />
-                                                            </div> */}
-
                                                         </div>
-
                                                     </Button>
-
                                                 </ModalTrigger>
-
                                                 <ModalBody>
-
                                                     <ModalContent className="max-w-6xl p-0 overflow-hidden bg-black flex flex-col rounded-2xl md:rounded-3xl mx-4">
-
                                                         <video
                                                             autoPlay
                                                             controls
@@ -367,11 +353,8 @@ export default function BiographyCompany({ id, highlight, short_description, des
                                                                 type="video/mp4"
                                                             />
                                                         </video>
-
                                                     </ModalContent>
-
                                                 </ModalBody>
-
                                             </Modal>
                                         )}
 
