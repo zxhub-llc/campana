@@ -47,15 +47,22 @@ const Footer = ({ menuItems, siteInfo }: FooterProps) => {
     const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
         e.preventDefault()
 
-        const isHome = href === '/' || href.endsWith('/inicio') || href.endsWith('/home');
+        // Normaliza: quita el dominio si viene una URL absoluta
+        let normalizedHref = href.replace(/^https?:\/\/[^/]+/, '')
+
+        // Quita el prefijo de locale si ya viene incluido (ej: /es/algo -> /algo)
+        const localePrefixPattern = new RegExp(`^/(${Object.keys(i18n).join('|')})(?=/|#|$)`)
+        normalizedHref = normalizedHref.replace(localePrefixPattern, '') || '/'
+
+        const isHome = normalizedHref === '/' || normalizedHref.endsWith('/inicio') || normalizedHref.endsWith('/home');
 
         if (isHome) {
             router.push(`/${lang}`);
             return;
         }
 
-        if (href.includes('#')) {
-            const [path, hash] = href.split('#')
+        if (normalizedHref.includes('#')) {
+            const [path, hash] = normalizedHref.split('#')
             const id = hash
 
             const cleanPathname = pathname.replace(/\/$/, '')
@@ -70,10 +77,7 @@ const Footer = ({ menuItems, siteInfo }: FooterProps) => {
                 setTimeout(() => scrollTo(id), 800)
             }
         } else {
-            const finalHref = href.startsWith('/') && !href.startsWith(`/${lang}`)
-                ? `/${lang}${href}`
-                : href;
-
+            const finalHref = `/${lang}${normalizedHref}`
             router.push(finalHref)
         }
     }
