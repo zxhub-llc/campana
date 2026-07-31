@@ -334,7 +334,7 @@ export default function BiographyCompany({ id, highlight, short_description, des
 
                                                     <Button
                                                         type="button"
-                                                        className=" px-5 md:px-6 py-5 md:py-6 hover:bg-campana-secondary group rounded-full bg-white w-full sm:w-auto transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-4 cursor-pointer text-campana-primary hover:text-white relative z-50">
+                                                        className=" px-5 md:px-6 py-5 md:py-6 hover:bg-campana-secondary group rounded-full bg-white w-auto transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-4 cursor-pointer text-campana-primary hover:text-white relative z-50">
 
                                                         <div className="flex items-center gap-3 md:gap-4">
 
